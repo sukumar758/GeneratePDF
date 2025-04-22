@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Form</title>
+  <link rel="stylesheet" th:href="@{/css/style1.css}">
+</head>
+<body>
+<div class="form-container">
+  <h2>Employee Onboarding Form</h2>
+  <form action="/generatePdf" method="post">
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="Email">Email Id:</label>
+      <input type="email" id="Email" name="Email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="domain">Select Domain:</label>
+      <select id="domain" name="domain">
+        <option value="JAVA">JAVA</option>
+        <option value="AI">AI</option>
+        <option value="BA">BA</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Select Role:</label>
+      <select id="role" name="role">
+        <option value="Business Analyst Intern">Business Analyst Intern</option>
+        <option value="Java Developer">Java Developer</option>
+        <option value="GenAI Developer">GenAI Developer</option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
+      <label for="manager">Reporting Manager:</label>
+      <select id="manager" name="manager">
+        <option value="Kishore">Kishore</option>
+        <option value="Naga Sekhar">Naga Sekhar</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="joiningDate">Date of Joining:</label>
+      <input type="date" id="joiningDate" name="joiningDate" required>
+    </div>
+
+    <div class="form-group">
+      <button type="submit">Download PDF</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

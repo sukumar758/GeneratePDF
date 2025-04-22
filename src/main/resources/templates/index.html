@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Acentrik Technology Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="logo">Acentrik Technology Solutions LLC</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/form}">Services</a></li>
+            <li><a th:href="@{/products}">Products</a></li>
+            <li><a th:href="@{/careers}">Careers</a></li>
+
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <h1>We serve you the software solutions</h1>
+        <p>Explore our services and products tailored for innovation and success.</p>
+
+        <div class="role-buttons">
+            <a href="#" class="btn">Login as Admin</a>
+            <a href="#" class="btn">Login as User</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+</footer>
+</body>
+</html>
