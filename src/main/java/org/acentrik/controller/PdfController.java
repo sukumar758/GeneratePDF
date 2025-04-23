@@ -8,8 +8,6 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -45,7 +43,7 @@ public class PdfController {
                     .setFontSize(16)
                     .setTextAlignment(TextAlignment.CENTER));
             paragraph.add(new Text("Passion, Innovation & Trust")
-                    .setItalic()
+                    .setBold()
                     .setFontSize(12)
                     .setTextAlignment(TextAlignment.CENTER));
 
@@ -69,18 +67,18 @@ public class PdfController {
 
             document.add(new Paragraph("It's my pleasure to offer you a " + formData.getRole() + "  role at Acentrik. Your internship will be from " + formattedJoiningDate+ ".").setTextAlignment(TextAlignment.JUSTIFIED));
 
-            document.add(new Paragraph("On behalf of Acentrik Technology Solutions, LLC, 1335 19th Street, Northlake, TX-76226, we are pleased to welcome you. You will report to " + formData.getManager() + " (Reporting Manager) during your internship period with us.").setTextAlignment(TextAlignment.JUSTIFIED));
+            document.add(new Paragraph("On behalf of Acentrik Technology Solutions, LLC, 4425 W Airport fwy, Suite 117, Irving, TX-75062, we are pleased to welcome you. You will report to " + formData.getManager() + " (Reporting Manager) during your internship period with us.").setTextAlignment(TextAlignment.JUSTIFIED));
 
             document.add(new Paragraph("Your Job responsibilities include:")
                     .setBold());
 
             document.add(new Paragraph(
-                    "• Conduct business process analysis to understand existing workflow and systems, document current processes and systems.\n" +
-                            "• Create requirements for new processes, develop use cases and manage requirement changes.\n" +
-                            "• Have strong technical acumen with the ability to translate information and research into non-technical language as necessary to effectively communicate across teams.\n" +
-                            "• Gather, summarize, and verify information used to populate reports and deliverables.\n" +
-                            "• Facilitate requirement reviews with stakeholders, perform QA testing and conduct UAT with business/process teams.\n" +
-                            "• Maintain documentation related to CMDB processes, procedures, and configurations."
+                    "\t• Conduct business process analysis to understand existing workflow and systems, document current processes and systems.\n" +
+                            "\t• Create requirements for new processes, develop use cases and manage requirement changes.\n" +
+                            "\t• Have strong technical acumen with the ability to translate information and research into non-technical language as necessary to effectively communicate across teams.\n" +
+                            "\t• Gather, summarize, and verify information used to populate reports and deliverables.\n" +
+                            "\t• Facilitate requirement reviews with stakeholders, perform QA testing and conduct UAT with business/process teams.\n" +
+                            "\t• Maintain documentation related to CMDB processes, procedures, and configurations."
             ).setTextAlignment(TextAlignment.JUSTIFIED));
 
 
