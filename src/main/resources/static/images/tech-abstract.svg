@@ -1,0 +1,66 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circuit board pattern -->
+  <g stroke="#f97316" stroke-width="2" fill="none">
+    <!-- Horizontal and vertical lines -->
+    <path d="M 50 50 L 350 50" opacity="0.7"/>
+    <path d="M 50 100 L 250 100" opacity="0.7"/>
+    <path d="M 50 150 L 350 150" opacity="0.7"/>
+    <path d="M 50 200 L 300 200" opacity="0.7"/>
+    <path d="M 50 250 L 350 250" opacity="0.7"/>
+    <path d="M 50 300 L 250 300" opacity="0.7"/>
+    <path d="M 50 350 L 350 350" opacity="0.7"/>
+    
+    <path d="M 50 50 L 50 350" opacity="0.7"/>
+    <path d="M 100 50 L 100 250" opacity="0.7"/>
+    <path d="M 150 150 L 150 350" opacity="0.7"/>
+    <path d="M 200 50 L 200 350" opacity="0.7"/>
+    <path d="M 250 100 L 250 300" opacity="0.7"/>
+    <path d="M 300 50 L 300 200" opacity="0.7"/>
+    <path d="M 350 50 L 350 350" opacity="0.7"/>
+    
+    <!-- Circles at intersections -->
+    <circle cx="50" cy="50" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="50" cy="100" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="50" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="50" cy="200" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="50" cy="250" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="50" cy="300" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="50" cy="350" r="5" fill="#f97316" opacity="0.9"/>
+    
+    <circle cx="100" cy="50" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="100" cy="100" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="100" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="100" cy="200" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="100" cy="250" r="5" fill="#f97316" opacity="0.9"/>
+    
+    <circle cx="150" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="150" cy="200" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="150" cy="250" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="150" cy="300" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="150" cy="350" r="5" fill="#f97316" opacity="0.9"/>
+    
+    <circle cx="200" cy="50" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="200" cy="100" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="200" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="200" cy="200" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="200" cy="250" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="200" cy="300" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="200" cy="350" r="5" fill="#f97316" opacity="0.9"/>
+    
+    <circle cx="250" cy="100" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="250" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="250" cy="200" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="250" cy="250" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="250" cy="300" r="5" fill="#f97316" opacity="0.9"/>
+    
+    <circle cx="300" cy="50" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="300" cy="100" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="300" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="300" cy="200" r="5" fill="#f97316" opacity="0.9"/>
+    
+    <circle cx="350" cy="50" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="350" cy="150" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="350" cy="250" r="5" fill="#f97316" opacity="0.9"/>
+    <circle cx="350" cy="350" r="5" fill="#f97316" opacity="0.9"/>
+  </g>
+</svg>
