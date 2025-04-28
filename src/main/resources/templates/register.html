@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Acentrik Technology Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style1.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img th:src="@{/img1.png}" alt="Acentrik Technology Solutions LLC" style="max-height: 50px;">
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/products}">Products</a></li>
+                <li><a th:href="@{/careers}">Careers</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">My Profile</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0.75rem;">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Register</h2>
+        <div th:if="${error}" class="error-message" th:text="${error}">
+            Error message will be displayed here.
+        </div>
+        <div th:if="${success}" class="success-message" th:text="${success}">
+            Success message will be displayed here.
+        </div>
+        <form th:action="@{/register}" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <div class="user-info" style="margin-top: 1.5rem; background-color: var(--bg-color); box-shadow: none;">
+            <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

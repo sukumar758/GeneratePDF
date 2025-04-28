@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: pdf-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: pdf
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - pdf-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pdf-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pdf-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8091:8091"
+    environment:
+      - MYSQL_HOST=mysql
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/pdf
+      - SPRING_DATASOURCE_DRIVER=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQLDialect
+      # Add timezone setting for Alpine
+      - TZ=UTC
+    env_file:
+      - .env
+    networks:
+      - pdf-network
+    restart: unless-stopped
+
+networks:
+  pdf-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

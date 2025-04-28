@@ -1,39 +1,160 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acentrik Technology Solutions</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<header>
-    <div class="logo">Acentrik Technology Solutions LLC</div>
-    <nav>
-        <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/form}">Services</a></li>
-            <li><a th:href="@{/products}">Products</a></li>
-            <li><a th:href="@{/careers}">Careers</a></li>
+<!-- Tech abstract decorations -->
+<div class="tech-abstract top-right animate-rotate"></div>
+<div class="tech-abstract bottom-left animate-rotate"></div>
 
-        </ul>
-    </nav>
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img th:src="@{/img1.png}" alt="Acentrik Technology Solutions LLC" style="max-height: 50px;">
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/products}">Products</a></li>
+                <li><a th:href="@{/careers}">Careers</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">My Profile</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/myOfferLetters}">My Offer Letters</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0.75rem;">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<main>
+<main class="container">
     <section class="hero">
-        <h1>We serve you the software solutions</h1>
-        <p>Explore our services and products tailored for innovation and success.</p>
+        <!-- Tech pattern background -->
+        <div class="tech-pattern-bg"></div>
 
-        <div class="role-buttons">
-            <a href="#" class="btn">Login as Admin</a>
-            <a href="#" class="btn">Login as User</a>
+        <h1 class="animate-slide-up">We serve you the software solutions</h1>
+        <p class="animate-slide-up">Explore our services and products tailored for innovation and success.</p>
+
+        <div class="hero-images">
+            <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" class="tech-image animate-float" style="width: 150px; position: absolute; top: 20px; right: 50px; opacity: 0.6;">
+            <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" class="tech-image animate-float" style="width: 120px; position: absolute; bottom: 30px; left: 60px; opacity: 0.5; transform: rotate(45deg);">
+        </div>
+
+        <div sec:authorize="isAuthenticated()" class="user-info animate-fade-in">
+            <h3>Welcome, <span th:text="${username}">User</span>!</h3>
+            <p>You are logged in as: <span th:text="${role}">Role</span></p>
+            <p sec:authorize="hasRole('ADMIN')">You have admin privileges.</p>
+            <p sec:authorize="hasRole('USER')">You have user privileges.</p>
+            <p sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}" class="btn animate-pulse">View Employee List</a></p>
+        </div>
+    </section>
+
+    <!-- Wave divider -->
+    <div class="wave-divider"></div>
+
+    <!-- Employee List Section for Admin -->
+    <section class="employee-list" sec:authorize="hasRole('ADMIN')">
+        <h2 class="section-title animate-fade-in">Employee List</h2>
+        <div class="table-container">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}" class="animate-on-scroll">
+                        <td th:text="${user.id}">1</td>
+                        <td th:text="${user.username}">username</td>
+                        <td th:text="${user.role}">role</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Wave divider -->
+    <div class="wave-divider"></div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="tech-pattern-bg"></div>
+        <h2 class="section-title animate-fade-in">What Our Clients Say</h2>
+        <div class="testimonial-container">
+            <div class="testimonial-card animate-slide-in">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Acentrik Technology Solutions transformed our business with their innovative software. Their team's expertise and dedication exceeded our expectations."</p>
+                    <i class="fas fa-quote-right quote-icon right"></i>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Smith" class="testimonial-avatar">
+                    <div class="author-info">
+                        <h4>John Smith</h4>
+                        <p>CEO, TechInnovate Inc.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card animate-slide-in">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Working with Acentrik has been a game-changer for our company. Their solutions are not only cutting-edge but also user-friendly and reliable."</p>
+                    <i class="fas fa-quote-right quote-icon right"></i>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="testimonial-avatar">
+                    <div class="author-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>CTO, Digital Dynamics</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card animate-slide-in">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"The team at Acentrik delivered our project on time and within budget. Their attention to detail and customer service is unmatched in the industry."</p>
+                    <i class="fas fa-quote-right quote-icon right"></i>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Michael Chen" class="testimonial-avatar">
+                    <div class="author-info">
+                        <h4>Michael Chen</h4>
+                        <p>Director, Global Solutions</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </main>
 
 <footer>
-    <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+    <div class="container">
+        <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+        <div class="footer-images" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+            <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" style="width: 80px; opacity: 0.7;">
+            <p style="font-size: 0.8rem; margin-top: 10px;">All images and designs © 2025 Acentrik Technology Solutions</p>
+        </div>
+    </div>
 </footer>
+    <!-- JavaScript for animations -->
+    <script th:src="@{/js/animations.js}"></script>
 </body>
 </html>

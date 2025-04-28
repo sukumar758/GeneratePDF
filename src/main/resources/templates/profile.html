@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Acentrik Technology Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            padding: 2rem;
+            position: relative;
+        }
+        .profile-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .profile-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease;
+        }
+        .profile-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-color);
+            transition: var(--transition);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25);
+        }
+        .btn-update {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .btn-update:hover {
+            background-color: #45a049;
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        .offer-letter {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-color);
+            box-shadow: var(--shadow-sm);
+        }
+        .tech-pattern-bg {
+            opacity: 0.03;
+        }
+    </style>
+</head>
+<body>
+<!-- Tech abstract decorations -->
+<div class="tech-abstract top-right animate-rotate"></div>
+<div class="tech-abstract bottom-left animate-rotate"></div>
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img th:src="@{/img1.png}" alt="Acentrik Technology Solutions LLC" style="max-height: 50px;">
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}" class="active">My Profile</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/myOfferLetters}">My Offer Letters</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0.75rem;">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container profile-container">
+    <h1 class="profile-title animate-fade-in">My Profile</h1>
+    <p class="animate-fade-in" style="margin-bottom: 2rem;">Welcome, <span th:text="${username}">User</span>! You are logged in as: <span th:text="${role}">ROLE_USER</span></p>
+
+    <div class="profile-section animate-slide-up">
+        <!-- Tech pattern background -->
+        <div class="tech-pattern-bg"></div>
+
+        <div class="section-header">
+            <i class="fas fa-user-circle" style="font-size: 1.5rem; margin-right: 0.75rem; color: var(--primary-color);"></i>
+            <h2>Profile Information</h2>
+        </div>
+
+        <form th:action="@{/updateProfile}" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" th:value="${user.username}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+            </div>
+            <button type="submit" class="btn-update animate-pulse">Update Profile</button>
+        </form>
+    </div>
+
+    <div class="profile-section animate-slide-up" style="animation-delay: 0.2s;">
+        <!-- Tech pattern background -->
+        <div class="tech-pattern-bg"></div>
+
+        <div class="section-header">
+            <i class="fas fa-file-contract" style="font-size: 1.5rem; margin-right: 0.75rem; color: var(--primary-color);"></i>
+            <h2>My Offer Letter</h2>
+        </div>
+
+        <p>You can view and download your latest offer letter here, or <a th:href="@{/myOfferLetters}">view all your offer letters</a>.</p>
+        <div class="offer-letter">
+            <p th:if="${offerLetter != null}">
+                <a th:href="@{/viewOfferLetter}" class="btn btn-view"><i class="fas fa-eye"></i> View Offer Letter</a>
+                <a th:href="@{/downloadOfferLetter}" class="btn btn-download"><i class="fas fa-download"></i> Download Offer Letter</a>
+            </p>
+            <p th:if="${offerLetter == null}">
+                <i class="fas fa-info-circle"></i> No offer letter has been generated for you yet.
+            </p>
+        </div>
+
+        <!-- Tech image decoration -->
+        <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" class="tech-image animate-float" style="width: 100px; position: absolute; bottom: 20px; right: 20px; opacity: 0.2;">
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+        <div class="footer-images" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+            <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" style="width: 80px; opacity: 0.7;">
+            <p style="font-size: 0.8rem; margin-top: 10px;">All images and designs © 2025 Acentrik Technology Solutions</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Wave divider -->
+<div class="wave-divider"></div>
+
+<!-- JavaScript for animations -->
+<script th:src="@{/js/animations.js}"></script>
+</body>
+</html>
