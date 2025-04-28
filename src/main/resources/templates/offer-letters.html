@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Offer Letters - Acentrik Technology Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            padding: 2rem;
+            position: relative;
+        }
+        .profile-section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .profile-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease;
+        }
+        .profile-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .offer-letters-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .offer-letters-table th, .offer-letters-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .offer-letters-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+        .offer-letters-table tr:hover {
+            background-color: rgba(249, 115, 22, 0.05);
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 0.75rem;
+            margin-right: 0.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: var(--transition);
+        }
+        .btn-view {
+            background-color: #2196F3;
+        }
+        .btn-download {
+            background-color: #4CAF50;
+        }
+        .btn-remove {
+            background-color: #f44336;
+        }
+        .btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+        .no-letters {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: rgba(249, 115, 22, 0.05);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-color);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .section-header i {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+            color: var(--primary-color);
+        }
+        .tech-pattern-bg {
+            opacity: 0.03;
+        }
+    </style>
+    <script>
+        function removeOfferLetter(id) {
+            if (confirm('Are you sure you want to remove this offer letter?')) {
+                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                headers[header] = token;
+
+                fetch('/removeOfferLetter/' + id, {
+                    method: 'DELETE',
+                    headers: headers
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Offer letter removed successfully');
+                        location.reload();
+                    } else {
+                        response.text().then(text => {
+                            alert('Failed to remove offer letter: ' + text);
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+            }
+        }
+
+        function terminateEmployee(userId) {
+            if (confirm('Are you sure you want to terminate this employee? This action cannot be undone.')) {
+                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                headers[header] = token;
+
+                fetch('/terminateEmployee/' + userId, {
+                    method: 'DELETE',
+                    headers: headers
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Employee terminated successfully');
+                        location.reload();
+                    } else {
+                        response.text().then(text => {
+                            alert('Failed to terminate employee: ' + text);
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+<!-- Tech abstract decorations -->
+<div class="tech-abstract top-right animate-rotate"></div>
+<div class="tech-abstract bottom-left animate-rotate"></div>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img th:src="@{/img1.png}" alt="Acentrik Technology Solutions LLC" style="max-height: 50px;">
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/products}">Products</a></li>
+                <li><a th:href="@{/careers}">Careers</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">My Profile</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/myOfferLetters}" class="active">My Offer Letters</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0.75rem;">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container profile-container">
+    <h1 class="profile-title animate-fade-in">My Offer Letters</h1>
+
+    <!-- Admin View -->
+    <div class="profile-section animate-slide-up" th:if="${isAdmin}">
+        <!-- Tech pattern background -->
+        <div class="tech-pattern-bg"></div>
+
+        <div class="section-header">
+            <i class="fas fa-users-cog"></i>
+            <h2>Employee Offer Letters Management</h2>
+        </div>
+        <p>View, download, or remove offer letters for all employees.</p>
+
+        <div th:if="${employeeOfferLetters != null and !employeeOfferLetters.isEmpty()}">
+            <div th:each="entry : ${employeeOfferLetters}" class="employee-section" style="margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin-top: 1.5rem; color: var(--primary-color);">
+                        <i class="fas fa-user"></i> 
+                        <span th:text="${entry.key.username}">employee@example.com</span>
+                    </h3>
+                    <button th:onclick="'terminateEmployee(' + ${entry.key.id} + ')'" class="btn btn-remove" style="margin-top: 1rem;">
+                        <i class="fas fa-user-slash"></i> Terminate Employee
+                    </button>
+                </div>
+
+                <table class="offer-letters-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-file-alt"></i> File Name</th>
+                            <th><i class="fas fa-calendar-alt"></i> Created Date</th>
+                            <th><i class="fas fa-cogs"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="letter : ${entry.value}" class="animate-on-scroll">
+                            <td th:text="${letter.fileName}">OfferLetter.pdf</td>
+                            <td th:text="${#temporals.format(letter.createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01 12:00</td>
+                            <td>
+                                <a th:href="@{'/viewOfferLetter/' + ${letter.id}}" class="btn btn-view"><i class="fas fa-eye"></i> View</a>
+                                <a th:href="@{'/downloadOfferLetter/' + ${letter.id}}" class="btn btn-download"><i class="fas fa-download"></i> Download</a>
+                                <button th:onclick="'removeOfferLetter(' + ${letter.id} + ')'" class="btn btn-remove"><i class="fas fa-trash-alt"></i> Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div th:if="${employeeOfferLetters == null or employeeOfferLetters.isEmpty()}" class="no-letters animate-fade-in">
+            <p><i class="fas fa-info-circle"></i> There are no offer letters for any employees yet.</p>
+        </div>
+
+        <!-- Tech image decoration -->
+        <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" class="tech-image animate-float" style="width: 100px; position: absolute; bottom: 20px; right: 20px; opacity: 0.2;">
+    </div>
+
+    <!-- Regular User View -->
+    <div class="profile-section animate-slide-up" th:if="${!isAdmin}">
+        <!-- Tech pattern background -->
+        <div class="tech-pattern-bg"></div>
+
+        <div class="section-header">
+            <i class="fas fa-file-contract"></i>
+            <h2>My Offer Letters</h2>
+        </div>
+        <p>View, download, or remove your offer letters.</p>
+
+        <div th:if="${offerLetters != null and !offerLetters.isEmpty()}">
+            <table class="offer-letters-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-file-alt"></i> File Name</th>
+                        <th><i class="fas fa-calendar-alt"></i> Created Date</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="letter : ${offerLetters}" class="animate-on-scroll">
+                        <td th:text="${letter.fileName}">OfferLetter.pdf</td>
+                        <td th:text="${#temporals.format(letter.createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01 12:00</td>
+                        <td>
+                            <a th:href="@{'/viewOfferLetter/' + ${letter.id}}" class="btn btn-view"><i class="fas fa-eye"></i> View</a>
+                            <a th:href="@{'/downloadOfferLetter/' + ${letter.id}}" class="btn btn-download"><i class="fas fa-download"></i> Download</a>
+                            <button th:onclick="'removeOfferLetter(' + ${letter.id} + ')'" class="btn btn-remove"><i class="fas fa-trash-alt"></i> Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${offerLetters == null or offerLetters.isEmpty()}" class="no-letters animate-fade-in">
+            <p><i class="fas fa-info-circle"></i> You don't have any offer letters yet.</p>
+        </div>
+
+        <!-- Tech image decoration -->
+        <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" class="tech-image animate-float" style="width: 100px; position: absolute; bottom: 20px; right: 20px; opacity: 0.2;">
+    </div>
+</main>
+
+<!-- Wave divider -->
+<div class="wave-divider"></div>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+        <div class="footer-images" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+            <img th:src="@{/images/tech-abstract.svg}" alt="Technology Abstract" style="width: 80px; opacity: 0.7;">
+            <p style="font-size: 0.8rem; margin-top: 10px;">All images and designs © 2025 Acentrik Technology Solutions</p>
+        </div>
+    </div>
+</footer>
+
+<!-- CSRF token for AJAX requests -->
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+<!-- JavaScript for animations -->
+<script th:src="@{/js/animations.js}"></script>
+</body>
+</html>

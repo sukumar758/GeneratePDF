@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Error</h2>
+        
+        <div class="alert alert-danger" th:text="${error}">An error occurred</div>
+        
+        <div class="form-group">
+            <a href="/login">Back to Login</a>
+        </div>
+    </div>
+</body>
+</html>

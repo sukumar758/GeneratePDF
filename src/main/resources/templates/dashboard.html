@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Acentrik Technology Solutions</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            padding: 2rem;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .user-table th, .user-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .user-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .user-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .user-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .dashboard-title {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img th:src="@{/img1.png}" alt="Acentrik Technology Solutions LLC" style="max-height: 50px;">
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}" class="active">Dashboard</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">My Profile</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/myOfferLetters}">My Offer Letters</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0.75rem;">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container dashboard-container">
+    <h1 class="dashboard-title">Admin Dashboard</h1>
+    <p>Welcome, <span th:text="${username}">Admin</span>! You are logged in as: <span th:text="${role}">ROLE_ADMIN</span></p>
+
+    <h2>Add New Employee</h2>
+    <form th:action="@{/addEmployee}" method="post" class="form-container" style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
+        <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div style="flex: 1;">
+                <label for="username" style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Email/Username:</label>
+                <input type="email" id="username" name="username" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+            </div>
+            <div style="flex: 1;">
+                <label for="password" style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Password:</label>
+                <input type="password" id="password" name="password" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+            </div>
+        </div>
+        <button type="submit" class="btn" style="background-color: #4CAF50; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold;">Add Employee</button>
+    </form>
+
+    <div th:if="${successMessage}" style="background-color: #dff0d8; color: #3c763d; padding: 1rem; margin-bottom: 1rem; border-radius: 3px;">
+        <p th:text="${successMessage}">Success message</p>
+    </div>
+
+    <div th:if="${errorMessage}" style="background-color: #f2dede; color: #a94442; padding: 1rem; margin-bottom: 1rem; border-radius: 3px;">
+        <p th:text="${errorMessage}">Error message</p>
+    </div>
+
+    <h2>All Users</h2>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Offer Letter Details</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.username}">username</td>
+                <td>
+                    <div th:if="${offerLetterMap.containsKey(user.id)}">
+                        <p><strong>File:</strong> <span th:text="${offerLetterMap.get(user.id).fileName}">filename.pdf</span></p>
+                        <p><strong>Created:</strong> <span th:text="${#temporals.format(offerLetterMap.get(user.id).createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01</span></p>
+                    </div>
+                    <div th:unless="${offerLetterMap.containsKey(user.id)}">
+                        <p>No offer letter generated</p>
+                    </div>
+                </td>
+                <td style="display: flex; gap: 0.5rem;">
+                    <a th:href="@{/form(username=${user.username})}" class="btn" style="background-color: #4CAF50; color: white; text-decoration: none; padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Generate Offer Letter</a>
+                    <a th:href="@{/eform(username=${user.username})}" class="btn" style="background-color: #2196F3; color: white; text-decoration: none; padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Email Offer Letter</a>
+                    <form th:action="@{/terminateEmployee}" method="post" style="display: inline;">
+                        <input type="hidden" name="userId" th:value="${user.id}">
+                        <button type="submit" class="btn" style="background-color: #f44336; color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;" onclick="return confirm('Are you sure you want to terminate this employee?')">Terminate Employee</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>
