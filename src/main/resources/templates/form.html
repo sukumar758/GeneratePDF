@@ -1,65 +1,113 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Employee Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Form - Acentrik Technology Solutions</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/style1.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="form-container">
-  <h2>Employee Onboarding Form</h2>
-  <form action="/generatePdf" method="post">
-    <div class="form-group">
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" name="firstName" required>
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <img th:src="@{/img1.png}" alt="Acentrik Technology Solutions LLC" style="max-height: 50px;">
     </div>
+    <nav>
+      <ul>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/products}">Products</a></li>
+        <li><a th:href="@{/careers}">Careers</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/dashboard}">Dashboard</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">My Profile</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <form th:action="@{/logout}" method="post">
+            <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0.75rem;">Logout</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-    <div class="form-group">
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" name="lastName" required>
+<main class="container">
+  <div class="form-container">
+    <h2>Employee Onboarding Form</h2>
+    <p class="form-description">This form will generate an offer letter and create a user account for the new employee. The employee will be able to log in using their email address and view their offer letter.</p>
+    <div class="alert alert-info" style="background-color: #d1ecf1; color: #0c5460; padding: 1rem; margin-bottom: 1rem; border-radius: 3px;">
+      <p><strong>Note:</strong> After downloading the offer letter, please visit the <a th:href="@{/dashboard}" style="color: #0c5460; text-decoration: underline;">Dashboard</a> to verify it has been saved.</p>
     </div>
+    <form th:action="@{/generatePdf}" method="post" id="pdfForm">
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
 
-    <div class="form-group">
-      <label for="Email">Email Id:</label>
-      <input type="email" id="Email" name="Email" required>
-    </div>
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
 
-    <div class="form-group">
-      <label for="domain">Select Domain:</label>
-      <select id="domain" name="domain">
-        <option value="JAVA">JAVA</option>
-        <option value="AI">AI</option>
-        <option value="BA">BA</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label for="email">Email Id:</label>
+        <input type="email" id="email" name="email" th:value="${username}" required>
+      </div>
 
-    <div class="form-group">
-      <label for="role">Select Role:</label>
-      <select id="role" name="role">
-        <option value="Business Analyst Intern">Business Analyst Intern</option>
-        <option value="Java Developer">Java Developer</option>
-        <option value="GenAI Developer">GenAI Developer</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label for="domain">Select Domain:</label>
+        <select id="domain" name="domain">
+          <option value="JAVA">JAVA</option>
+          <option value="AI">AI</option>
+          <option value="BA">BA</option>
+        </select>
+      </div>
 
+      <div class="form-group">
+        <label for="role">Select Role:</label>
+        <select id="role" name="role">
+          <option value="Business Analyst Intern">Business Analyst Intern</option>
+          <option value="Java Developer">Java Developer</option>
+          <option value="GenAI Developer">GenAI Developer</option>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label for="manager">Reporting Manager:</label>
-      <select id="manager" name="manager">
-        <option value="Kishore">Kishore</option>
-        <option value="Naga Sekhar">Naga Sekhar</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label for="manager">Reporting Manager:</label>
+        <select id="manager" name="manager">
+          <option value="Kishore">Kishore</option>
+          <option value="Naga Sekhar">Naga Sekhar</option>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label for="joiningDate">Date of Joining:</label>
-      <input type="date" id="joiningDate" name="joiningDate" required>
-    </div>
+      <div class="form-group">
+        <label for="joiningDate">Date of Joining:</label>
+        <input type="date" id="joiningDate" name="joiningDate" required>
+      </div>
 
-    <div class="form-group">
-      <button type="submit">Download PDF</button>
-    </div>
-  </form>
-</div>
+      <div class="form-group">
+        <button type="submit" class="btn">Download PDF</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2025 Acentrik Technology Solutions LLC. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('pdfForm').addEventListener('submit', function() {
+    // Use setTimeout to show the alert after the download has started
+    setTimeout(function() {
+      alert('Your offer letter is being downloaded. After download completes, please visit the Dashboard to verify it has been saved.');
+    }, 1000);
+  });
+</script>
 </body>
 </html>
