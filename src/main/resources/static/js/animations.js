@@ -1,4 +1,7 @@
+
+
 // Animation script for Acentrik website
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
