@@ -1,5 +1,71 @@
 Welcome to Acentrik
 
+# Acentrik - PDF Generation Application
+
+Welcome to Acentrik, a modern web application for generating PDF offer letters with React frontend and springboot backend.
+
+## Architecture
+
+The application consists of two main components:
+- **Backend**: Spring Boot application (Java 17) running on port 8091
+- **Frontend**: React application running on port 3000 (development)
+
+## React Frontend Implementation
+
+### Overview
+A React-based frontend has been implemented in the `frontend/` directory to replace the server-side rendered Thymeleaf templates. This provides a modern, responsive user interface with improved user experience.
+
+### Frontend Structure
+```
+frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   ├── Footer.css
+│   │   ├── Footer.js
+│   │   ├── Header.css
+│   │   ├── Header.js
+│   │   └── ProtectedRoute.js
+│   ├── contexts/
+│   │   └── AuthContext.js
+│   ├── pages/
+│   │   ├── Auth.css
+│   │   ├── Dashboard.css
+│   │   ├── Dashboard.js
+│   │   ├── Home.css
+│   │   ├── Home.js
+│   │   ├── Login.js
+│   │   ├── Profile.css
+│   │   ├── Profile.js
+│   │   └── Register.js
+│   ├── App.css
+│   ├── App.js
+│   ├── index.css
+│   └── index.js
+└── package.json
+```
+
+### Key Features
+1. **Authentication System**: JWT-based authentication with React Context
+2. **Protected Routes**: Role-based access control for admin features
+3. **Responsive Design**: Modern UI with CSS Grid and Flexbox
+4. **Component Architecture**: Reusable components for Header, Footer, and route protection
+5. **API Integration**: Axios for REST API communication with Spring Boot backend
+6. **User Management**: Profile management, password updates, and user registration
+
+### Frontend Dependencies
+- React 18.2.0
+- React Router DOM 6.11.0
+- Axios 1.4.0
+- React Testing Library for testing
+
+### API Proxy Configuration
+The frontend is configured to proxy API requests to the Spring Boot backend:
+```json
+"proxy": "http://localhost:8091"
+```
+
 ## Docker Build Optimizations
 
 The Docker build process has been optimized to improve build speed and reduce image size:
