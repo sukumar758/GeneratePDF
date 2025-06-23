@@ -69,6 +69,10 @@ public class SecurityConfig {
                 .requestMatchers("/register").permitAll()
                 .requestMatchers("/forgot-password").permitAll()
                 .requestMatchers("/reset-password").permitAll()
+                .requestMatchers("/api/auth/me").hasRole("ADMIN")
+                .requestMatchers("/api/users").hasRole("ADMIN")
+                .requestMatchers("/api/users/**").hasRole("ADMIN")
+                .requestMatchers("/api/profile/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/form").hasRole("ADMIN")
                 .requestMatchers("/generatePdf").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/eform").hasRole("ADMIN")
@@ -93,7 +97,7 @@ public class SecurityConfig {
                 .permitAll()
             )
             // Explicitly enable CSRF protection
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/actuator/**"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/actuator/**", "/api/**"))
             // Add security headers
             .headers(headers -> headers
                 .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self'; img-src 'self' https://randomuser.me; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'self'; media-src 'self'"))
