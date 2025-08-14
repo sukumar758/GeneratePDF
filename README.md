@@ -36,7 +36,7 @@ The Docker build process has been optimized to improve build speed and reduce im
 
 ### Building and Running with Docker
 
-1. Create a `.env` file in the project root with the following environment variables:
+1. Copy `.env.example` to `.env` in the project root and update the following environment variables:
    ```
    # Database Configuration
    MYSQL_ROOT_PASSWORD=your_mysql_root_password
