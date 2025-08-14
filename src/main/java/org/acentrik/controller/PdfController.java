@@ -20,6 +20,7 @@ import org.acentrik.model.User;
 import org.acentrik.service.EmailService;
 import org.acentrik.service.OfferLetterService;
 import org.acentrik.service.UserService;
+import org.acentrik.service.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -46,6 +47,9 @@ public class PdfController {
 
     @Autowired
     private OfferLetterService offerLetterService;
+
+    @Autowired
+    private PasswordValidator passwordValidator;
 
     @PostMapping("/generatePdf")
     public void downloadPDF(@ModelAttribute FormData formData, HttpServletResponse response, jakarta.servlet.http.HttpSession session) throws java.io.IOException {
@@ -124,15 +128,7 @@ public class PdfController {
      * @return A random password
      */
     private String generateRandomPassword() {
-        // Generate a random password with 8 characters
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-        java.util.Random random = new java.util.Random();
-        for (int i = 0; i < 8; i++) {
-            int index = random.nextInt(chars.length());
-            sb.append(chars.charAt(index));
-        }
-        return sb.toString();
+        return passwordValidator.generateRandomPassword();
     }
     @PostMapping("/emailPdf")
     public String emailPDF(@ModelAttribute FormData formData, Model model) {
